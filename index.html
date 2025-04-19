@@ -424,6 +424,13 @@
                     margin: clamp(0.3rem, 1vw, 0.5rem) !important;
                 }
 
+                .criteria select, .criteria input, .criteria button, .advanced-filter-toggle {
+                    font-size: clamp(1rem, 4vw, 1.5rem) !important;
+                    padding: clamp(10px, 2vw, 15px) !important;
+                }
+
+
+
                 /* Ajustări pentru aspect ratio extrem */
                 @media (orientation: landscape) and (max-height: 500px) {
                     :root {
@@ -493,6 +500,46 @@
                 transform: translateY(-3px);
                 box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
             }
+
+            .criteria select, .criteria button, .criteria input {
+                width: 100%;
+                padding: 0.75rem;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                background: var(--card-bg);
+                color: var(--text-color);
+                font-size: 0.95rem;
+                transition: border-color 0.2s;
+            }
+
+            .advanced-filter-toggle {
+                display: inline-block;
+                background: var(--border-color);
+                color: var(--text-color);
+                border: none;
+                border-radius: 8px;
+                padding: 0.75rem;
+                width: 100%;
+                text-align: center;
+                font-size: 0.95rem;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 1.5rem;
+                transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .advanced-filter-toggle:hover {
+                background: var(--primary-hover);
+                transform: translateY(-1px);
+                color: #fff;
+            }
+
+            .advanced-filter-toggle-checkbox:checked + .advanced-filter-toggle {
+                background: var(--primary-color);
+                color: #fff;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            }
         </style>
     </head>
     <body>
@@ -549,6 +596,19 @@
                     </select>
                     <!-- Butonul de generare (se folosește doar pentru tab-ul Random) -->
                     <button id="generateBtn">Generează</button>
+
+                    <input type="checkbox" id="advancedFilterToggle" class="advanced-filter-toggle-checkbox" hidden>
+                    <label for="advancedFilterToggle" class="advanced-filter-toggle">Filtre avansate</label>
+                    <div id="advancedFilters">
+                        <label for="filterMotionWord">Cuvânt în moțiune:</label>
+                        <input type="text" id="filterMotionWord" placeholder="ex: Joel">
+
+                        <label for="filterInfoslideWord">Cuvânt în infoslide:</label>
+                        <input type="text" id="filterInfoslideWord" placeholder="ex: demiurg">
+
+                        <label for="filterCATeamWord">Cuvânt în CA Team:</label>
+                        <input type="text" id="filterCATeamWord" placeholder="ex: Livia Rusu">
+                    </div>
                 </div>
             </div>
             <div class="content">
@@ -686,19 +746,19 @@
 
                 // Evenimente globale
                 function setupEventListeners() {
-                    // Toggle temă
                     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-                    // Tab-uri
                     document.getElementById('tab-random').addEventListener('click', () => switchTab('random'));
                     document.getElementById('tab-list').addEventListener('click', () => switchTab('list'));
-
-                    // Buton generare
                     document.getElementById('generateBtn').addEventListener('click', generateRandomMotion);
-
-                    // Filtre
-                    document.querySelectorAll('.criteria select').forEach(select => {
-                        select.addEventListener('change', handleFilterChange);
+                    document.querySelectorAll('.criteria select, .criteria input').forEach(el => {
+                        el.addEventListener('change', handleFilterChange);
+                        el.addEventListener('input', handleFilterChange);
+                    });
+                    // Advanced filters toggle
+                    document.getElementById('advancedFilterToggle').addEventListener('change', () => {
+                        const adv = document.getElementById('advancedFilters');
+                        adv.style.display = document.getElementById('advancedFilterToggle').checked ? 'block' : 'none';
+                        handleFilterChange();
                     });
                 }
 
@@ -770,8 +830,9 @@
 
                 // Filtrare moțiuni
                 function filterMotions() {
+                    const advancedEnabled = document.getElementById('advancedFilterToggle').checked;
                     return motionsData.filter(motion => {
-                        return (
+                        const base = (
                             checkThemeFilter(motion) &&
                             checkLanguageFilter(motion) &&
                             checkLevelFilter(motion) &&
@@ -779,6 +840,11 @@
                             checkInfoslideFilter(motion) &&
                             checkPreparationFilter(motion)
                         );
+                        if (!advancedEnabled) return base;
+                        return base &&
+                            checkMotionWordFilter(motion) &&
+                            checkInfoslideWordFilter(motion) &&
+                            checkCATeamWordFilter(motion);
                     });
                 }
 
@@ -869,6 +935,22 @@
                 function checkPreparationFilter(motion) {
                     const selected = document.getElementById('preparation').value;
                     return selected === 'all' || motion['P/I']?.toLowerCase() === selected.toLowerCase();
+                }
+
+                // New check functions
+                function checkMotionWordFilter(motion) {
+                    const kw = document.getElementById('filterMotionWord').value.trim().toLowerCase();
+                    return !kw || (motion['Moțiune'] || '').toLowerCase().includes(kw);
+                }
+                function checkInfoslideWordFilter(motion) {
+                    const kw = document.getElementById('filterInfoslideWord').value.trim().toLowerCase();
+                    const text = (motion['INFOs.'] || '').toString().toLowerCase();
+                    return !kw || text.includes(kw);
+                }
+                function checkCATeamWordFilter(motion) {
+                    const kw = document.getElementById('filterCATeamWord').value.trim().toLowerCase();
+                    const text = (motion['CA Team'] || '').toString().toLowerCase();
+                    return !kw || text.includes(kw);
                 }
 
                 // Afișare rezultate
@@ -969,9 +1051,15 @@
                     }
                 }
 
+                document.getElementById('advancedFilterToggle').addEventListener('change', () => {
+                    const isChecked = document.getElementById('advancedFilterToggle').checked;
+                    document.getElementById('advancedFilters').style.display = isChecked ? 'block' : 'none';
+                    handleFilterChange();
+                });
+
                 // Pornire aplicație
                 document.addEventListener('DOMContentLoaded', init);
         </script>
-        <div id="version">v.301</div>
+        <div id="version">v.302</div>
     </body>
 </html>
