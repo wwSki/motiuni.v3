@@ -309,7 +309,6 @@
                 }
             }
             
-            /* Media queries actualizate pentru aspect ratio */
             @media (max-width: 1200px) {
                 .container {
                     max-width: 100%;
@@ -322,13 +321,11 @@
             }
             
             @media (max-width: 768px), (max-aspect-ratio: 1.2) {
-                /* Variabile pentru scalare dinamica */
                 :root {
-                    --text-scale: calc(0.3vw + 0.3vh + 0.5vmin); /* Formula hibrida */
+                    --text-scale: calc(0.3vw + 0.3vh + 0.5vmin);
                     --base-size: clamp(14px, var(--text-scale) * 30, 24px);
                 }
 
-                /* Layout general */
                 body {
                     padding: 2vmax;
                     font-size: var(--base-size);
@@ -341,7 +338,6 @@
                     padding: 0 clamp(10px, 2vw, 20px);
                 }
 
-                /* Header */
                 header {
                     padding-right: clamp(80px, 25vw, 150px);
                     min-height: clamp(70px, 15vmin, 100px);
@@ -354,14 +350,12 @@
                     max-width: 90%;
                 }
 
-                /* Sidebar si content */
                 .sidebar, .content {
                     width: 100%;
                     padding: clamp(15px, 3vw, 25px);
                     border-radius: clamp(8px, 1.5vw, 12px);
                 }
 
-                /* Elemente moțiuni */
                 .motion {
                     padding: clamp(15px, 3vw, 25px);
                     margin-bottom: clamp(15px, 3vmin, 25px);
@@ -378,7 +372,6 @@
                     margin-bottom: clamp(1rem, 3vmin, 1.5rem);
                 }
 
-                /* Butoane si elemente interactive */
                 .theme-toggle {
                     font-size: clamp(1rem, 3.5vw, 1.4rem) !important;
                     padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2.5vw, 20px) !important;
@@ -397,7 +390,6 @@
                     line-height: 1.5;
                 }
 
-                /* Form elements */
                 .criteria select, #generateBtn {
                     font-size: clamp(1rem, 4vw, 1.5rem) !important;
                     padding: clamp(10px, 2vw, 15px) !important;
@@ -413,7 +405,6 @@
                     padding: clamp(10px, 2vw, 15px);
                 }
 
-                /* Counter și versiune */
                 .motion-count {
                     font-size: clamp(1.1rem, 4.5vw, 1.6rem) !important;
                     padding: clamp(12px, 2.5vw, 16px) clamp(20px, 4vw, 24px) !important;
@@ -424,17 +415,14 @@
                     margin: clamp(0.3rem, 1vw, 0.5rem) !important;
                 }
 
-                .criteria select, .criteria input, .criteria button, .advanced-filter-toggle {
+                .criteria input, .criteria button, .advanced-filter-toggle {
                     font-size: clamp(1rem, 4vw, 1.5rem) !important;
                     padding: clamp(10px, 2vw, 15px) !important;
                 }
 
-
-
-                /* Ajustări pentru aspect ratio extrem */
                 @media (orientation: landscape) and (max-height: 500px) {
                     :root {
-                        --text-scale: calc(0.4vh + 0.2vmin); /* Prioritate pe verticala */
+                        --text-scale: calc(0.4vh + 0.2vmin);
                     }
                     
                     header h1 {
@@ -446,7 +434,6 @@
                     }
                 }
 
-                /* Protecție pentru foldable devices */
                 @media (min-aspect-ratio: 3/4) and (max-aspect-ratio: 4/3) {
                     :root {
                         --text-scale: calc(0.25vw + 0.25vh + 0.5vmin);
@@ -540,6 +527,9 @@
                 color: #fff;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             }
+
+            #advancedFilters { display: none; }
+
         </style>
     </head>
     <body>
@@ -549,52 +539,41 @@
         </header>
         <div class="container">
             <div class="sidebar">
-                <!-- Taburi -->
                 <div class="tabs">
                     <button id="tab-random" class="active">Random</button>
                     <button id="tab-list">Listă</button>
                 </div>
-                <!-- Criterii -->
                 <div class="criteria">
-                    <!-- Tema -->
                     <label for="theme">Tema:</label>
                     <select id="theme">
                         <option value="all">Toate</option>
-                        <!-- Vom popula opțiunile pe baza mapping-ului -->
                     </select>
-                    <!-- Limba -->
                     <label for="language">Limba:</label>
                     <select id="language">
                         <option value="all">Toate</option>
                         <option value="Engleza">Engleza</option>
                         <option value="Romana">Romana</option>
                     </select>
-                    <!-- Nivel -->
                     <label for="level">Nivel:</label>
                     <select id="level">
                         <option value="both">Toate</option>
                         <option value="Incepator">Începător</option>
                         <option value="General">General</option>
                     </select>
-                    <!-- Competiție -->
                     <label for="competition">Competiție:</label>
                     <select id="competition">
                         <option value="all">Toate</option>
-                        <!-- Opțiunile vor fi populate din mapping-ul de competiții -->
                     </select>
-                    <!-- Infoslide -->
                     <label for="infoslide">Infoslide:</label>
                     <select id="infoslide">
                         <option value="both">Toate</option>
                         <option value="with">Cu infoslide</option>
                         <option value="without">Fără infoslide</option>
                     </select>
-                    <!-- Pregătire -->
                     <label for="preparation">Pregătire:</label>
                     <select id="preparation">
                         <option value="all">Toate</option>
                     </select>
-                    <!-- Butonul de generare (se folosește doar pentru tab-ul Random) -->
                     <button id="generateBtn">Generează</button>
 
                     <input type="checkbox" id="advancedFilterToggle" class="advanced-filter-toggle-checkbox" hidden>
@@ -613,7 +592,6 @@
             </div>
             <div class="content">
                 <div id="result">
-                    <!-- Rezultatele vor fi afișate aici -->
                 </div>
             </div>
         </div>
@@ -718,11 +696,9 @@
                   { key: 'Zenith Opoen', displayName: 'Zenith Opoen', aliases: ['Zenith Opoen'] }
                 ];
 
-               // Variabile globale
                 let motionsData = [];
                 let currentTab = "random";
 
-                // Inițializare aplicație
                 function init() {
                     setupTheme();
                     setupEventListeners();
@@ -730,21 +706,18 @@
                     loadMotions();
                 }
 
-                // Setare temă inițială
                 function setupTheme() {
                     const savedTheme = localStorage.getItem('theme') || 'dark';
                     document.body.setAttribute('data-theme', savedTheme);
                     updateThemeButton();
                 }
 
-                // Actualizează butonul temei
                 function updateThemeButton() {
                     const btn = document.getElementById('themeToggle');
                     const theme = document.body.getAttribute('data-theme') || 'dark';
                     btn.textContent = theme === 'dark' ? '🌞 Light Mode' : '🌙 Dark Mode';
                 }
 
-                // Evenimente globale
                 function setupEventListeners() {
                     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
                     document.getElementById('tab-random').addEventListener('click', () => switchTab('random'));
@@ -754,7 +727,7 @@
                         el.addEventListener('change', handleFilterChange);
                         el.addEventListener('input', handleFilterChange);
                     });
-                    // Advanced filters toggle
+
                     document.getElementById('advancedFilterToggle').addEventListener('change', () => {
                         const adv = document.getElementById('advancedFilters');
                         adv.style.display = document.getElementById('advancedFilterToggle').checked ? 'block' : 'none';
@@ -762,7 +735,6 @@
                     });
                 }
 
-                // Schimbare temă
                 function toggleTheme() {
                     const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
                     document.body.setAttribute('data-theme', newTheme);
@@ -770,7 +742,6 @@
                     updateThemeButton();
                 }
 
-                // Schimbare tab
                 function switchTab(tab) {
                     currentTab = tab;
                     document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
@@ -779,20 +750,16 @@
                     updateResults();
                 }
 
-                // Încărcare date
                 async function loadMotions() {
                     try {
                         const response = await fetch('motions.json');
                         motionsData = await response.json();
-                        // Adăugare validare
                         if (!Array.isArray(motionsData)) throw new Error('Format invalid');
                     } catch (error) {
                         console.error('Eroare la încărcarea datelor:', error);
-                        // Afișare mesaj utilizator
                     }
                 }
 
-                // Populare dropdown-uri
                 function populateDropdowns() {
                     populateThemes();
                     populateCompetitions();
@@ -828,7 +795,6 @@
                     return option;
                 }
 
-                // Filtrare moțiuni
                 function filterMotions() {
                     const advancedEnabled = document.getElementById('advancedFilterToggle').checked;
                     return motionsData.filter(motion => {
@@ -852,7 +818,6 @@
                 const selected = document.getElementById('theme').value;
                 if (selected === "all") return true;
 
-                // Extrage toate temele din motion
                 const motionThemes = [
                     motion["TEMA"],
                     motion["TEMA 1"],
@@ -863,7 +828,6 @@
                     motion["Tema 3"]
                 ].filter(Boolean).flatMap(t => t.split(',').map(t => t.trim()));
 
-                // Verifică potrivirea cu mapping-ul
                 return motionThemes.some(motionTheme =>
                     themesMapping.some(theme =>
                         theme.key.toLowerCase() === motionTheme.toLowerCase() &&
@@ -896,24 +860,20 @@
                     const selected = document.getElementById('infoslide').value;
                     if (selected === 'both') return true;
 
-                    // 1. Identifică toate câmpurile care conțin informații relevante
                     const infoFields = Object.keys(motion).filter(key => 
                         key.toLowerCase().includes('info') || 
                         key.toLowerCase().includes('infoslide') ||
                         key.toLowerCase().includes('context')
                     );
 
-                    // 2. Extrage și combină conținutul din toate câmpurile relevante
                     const combinedContent = infoFields
                         .map(field => (motion[field] || '').toString().trim())
                         .join(' ')
                         .trim();
 
-                    // 3. Verifică dacă conține conținut valid
                     const hasValidInfo = () => {
                         if (combinedContent.length === 0) return false;
-                        
-                        // 4. Ignoră răspunsurile neconcludente
+
                         const invalidPatterns = [
                             /^none$/i,
                             /^n\/?a$/i,
@@ -931,13 +891,11 @@
                     return selected === 'with' ? hasValidInfo() : !hasValidInfo();
                 }
 
-                // Filtrul nou pentru P/I
                 function checkPreparationFilter(motion) {
                     const selected = document.getElementById('preparation').value;
                     return selected === 'all' || motion['P/I']?.toLowerCase() === selected.toLowerCase();
                 }
 
-                // New check functions
                 function checkMotionWordFilter(motion) {
                     const kw = document.getElementById('filterMotionWord').value.trim().toLowerCase();
                     return !kw || (motion['Moțiune'] || '').toLowerCase().includes(kw);
@@ -953,7 +911,6 @@
                     return !kw || text.includes(kw);
                 }
 
-                // Afișare rezultate
                 function updateResults() {
                     const filtered = filterMotions();
                     if (currentTab === 'list') {
@@ -994,31 +951,27 @@
                     motions = [];
                 }
 
-                // Adăugăm event listener pentru copiere
                 resultDiv.addEventListener('click', handleMotionClick);
                 }
 
-                    // Handler pentru click pe moțiune
-            function handleMotionClick(event) {
-                const motionElement = event.target.closest('.motion');
-                if (!motionElement) return;
+                function handleMotionClick(event) {
+                    const motionElement = event.target.closest('.motion');
+                    if (!motionElement) return;
 
-                // Ignoră click-urile pe butonul de infoslide
-                if (event.target.closest('.infoslide-toggle')) return;
+                    if (event.target.closest('.infoslide-toggle')) return;
 
-                const textToCopy = motionElement.querySelector('.motion-text').textContent;
-                copyToClipboard(textToCopy, motionElement);
-            }
+                    const textToCopy = motionElement.querySelector('.motion-text').textContent;
+                    copyToClipboard(textToCopy, motionElement);
+                }
 
-            // Funcție de copiere în clipboard cu feedback
-            function copyToClipboard(text, element) {
-                navigator.clipboard.writeText(text)
-                    .then(() => {
-                        element.classList.add('copied');
-                        setTimeout(() => element.classList.remove('copied'), 500);
-                    })
-                    .catch(err => console.error('Eroare la copiere:', err));
-            }
+                function copyToClipboard(text, element) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => {
+                            element.classList.add('copied');
+                            setTimeout(() => element.classList.remove('copied'), 500);
+                        })
+                        .catch(err => console.error('Eroare la copiere:', err));
+                }
 
 
 
@@ -1031,7 +984,6 @@
                     document.getElementById('result').innerHTML = '';
                 }
 
-                // Actualizare counter
                 function updateCounter(count) {
                     let counter = document.querySelector('.motion-count');
                     if (!counter) {
@@ -1042,7 +994,6 @@
                     counter.textContent = `Moțiuni găsite: ${isNaN(count) ? 0 : count}`;
                 }
 
-                // Handler modificare filtre
                 function handleFilterChange() {
                     if (currentTab === 'list') {
                         updateResults();
@@ -1057,7 +1008,6 @@
                     handleFilterChange();
                 });
 
-                // Pornire aplicație
                 document.addEventListener('DOMContentLoaded', init);
         </script>
         <div id="version">v.302</div>
